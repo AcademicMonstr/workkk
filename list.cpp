@@ -69,6 +69,28 @@ public:
         return First->Info;
     }
 
+    //удаление по значению
+    bool RemoveByValue(int value) {
+    if (empty()) return false;
+    // Если удаляемый элемент - первый
+    if (First->Info == value) {
+        RemoveFirst();
+        return true;
+    }
+    // Ищем элемент
+    ListItem* current = First;
+    while (current->Next != nullptr && current->Next->Info != value) {
+        current = current->Next;
+    }
+    // Если элемент найден (current->Next не равен nullptr)
+    if (current->Next != nullptr) {
+        ListItem* temp = current->Next;
+        current->Next = temp->Next; // "Перепрыгиваем" через удаляемый узел
+        delete temp;
+        --size;
+        return true;
+    }
+
     // Проверка на пустоту
     bool empty() const noexcept {
         return size == 0;
@@ -115,6 +137,9 @@ int main() {
     std::cout << "Первый элемент после удаления: " << myList.Front() << std::endl; // 20
     std::cout << "Размер списка после удаления: " << myList.getSize() << std::endl; // 2
 
+    myList.RemoveByValue(11);
+    myList.Print();
+    
     myList.clear();
     std::cout << "Размер после очистки: " << myList.getSize() << std::endl; // 0
 
